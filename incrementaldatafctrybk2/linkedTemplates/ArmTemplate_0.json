@@ -314,6 +314,49 @@
 											}
 										}
 									]
+								},
+								{
+									"name": "Stored procedure1",
+									"type": "SqlServerStoredProcedure",
+									"dependsOn": [
+										{
+											"activity": "Copy data1",
+											"dependencyConditions": [
+												"Succeeded"
+											]
+										}
+									],
+									"policy": {
+										"timeout": "0.12:00:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"storedProcedureName": "[[dbo].[metadata_usp]",
+										"storedProcedureParameters": {
+											"LPV": {
+												"value": {
+													"value": "@activity('Lookup_max_value').output.firstRow.maxvalue",
+													"type": "Expression"
+												},
+												"type": "DateTime"
+											},
+											"tablename": {
+												"value": {
+													"value": "@item().tablename",
+													"type": "Expression"
+												},
+												"type": "String"
+											}
+										}
+									},
+									"linkedServiceName": {
+										"referenceName": "AzureSqlDatabase1",
+										"type": "LinkedServiceReference"
+									}
 								}
 							]
 						}
@@ -328,7 +371,8 @@
 				"[concat(variables('factoryId'), '/datasets/DS_metadata_azuresql')]",
 				"[concat(variables('factoryId'), '/datasets/Ds_lookup_maxvalue')]",
 				"[concat(variables('factoryId'), '/datasets/sql_source_copy')]",
-				"[concat(variables('factoryId'), '/datasets/DS_sink_gen2')]"
+				"[concat(variables('factoryId'), '/datasets/DS_sink_gen2')]",
+				"[concat(variables('factoryId'), '/linkedServices/AzureSqlDatabase1')]"
 			]
 		}
 	]
